@@ -2,6 +2,7 @@ require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { startMonitoring } = require('./utils/monitor');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -32,6 +33,8 @@ client.once('ready', async (c) => {
     } catch (error) {
         console.error(error);
     }
+
+    startMonitoring(client);
 });
 
 client.on('interactionCreate', async interaction => {

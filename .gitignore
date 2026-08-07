@@ -5,3 +5,4 @@ npm-debug.log*
 .vscode/
 .DS_Store
 Thumbs.db
+panel-config.json
