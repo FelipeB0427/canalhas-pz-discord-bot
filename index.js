@@ -1,7 +1,7 @@
 require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, REST, Routes, MessageFlags } = require('discord.js');
 const { startMonitoring } = require('./utils/monitor');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -47,7 +47,11 @@ client.on('interactionCreate', async interaction => {
         await command.execute(interaction);
     } catch (error) {
         console.error(error);
-        await interaction.reply({ content: 'Houve um erro ao executar esse comando!', ephemeral: true });
+        if (interaction.replied || interaction.deferred) {
+            await interaction.followUp({ content: '❌ Houve um erro ao executar esse comando!', flags: MessageFlags.Ephemeral });
+        } else {
+            await interaction.reply({ content: '❌ Houve um erro ao executar esse comando!', flags: MessageFlags.Ephemeral });
+        }
     }
 });
 

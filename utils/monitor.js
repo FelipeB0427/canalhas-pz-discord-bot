@@ -5,7 +5,7 @@ const { sendCommand } = require('./rconManager');
 
 const configPath = path.join(__dirname, '../config/panelConfig.json');
 
-async function updateServerStatus() {
+async function updateServerStatus(client) {
     if (!fs.existsSync(configPath)) return;
 
     const configData = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
@@ -49,6 +49,7 @@ async function updateServerStatus() {
 
 function startMonitoring(client) {
     console.log('⏱️ Iniciando monitoramento do servidor...');
+    updateServerStatus(client);
     setInterval(() => updateServerStatus(client), 60000);
 }
 
